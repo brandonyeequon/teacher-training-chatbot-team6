@@ -1,17 +1,3 @@
-'''
-openai==1.12.0
-transformers==4.38.2
-sentence-transformers==2.5.1
-torch==2.2.1
-flask==3.0.2
-python-dotenv==1.0.1
-SQLAlchemy==2.0.27
-psycopg2-binary==2.9.9
-alembic==1.13.1
-pgvector==0.2.5
-sqlalchemy-utils==0.41.1 
-'''
-# Prototype requirements 
 altair==5.5.0
 annotated-types==0.7.0
 anthropic==0.45.2
