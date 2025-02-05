@@ -59,6 +59,7 @@ def get_response(user_input):
             "Give brief responses, unless you get agitated or excited."
             "Adapt your responces as the conversation progresses."
             "React to the teacher's tone and content."
+            "If the problem is above a second grade level, give a incorrect anwser"
         ),
         messages=message_history
     )
@@ -93,7 +94,7 @@ def generate_actionable_feedback(conversation_transcript):
     """
     # Retrieve relevant textbook passages using RAG
     retrieved_passages = retrieve_textbook_context(conversation_transcript)
-    
+
     # Build a prompt that includes the conversation and textbook guidance
     prompt = f"""You are an experienced teacher trainer. Based on the following teacher conversation and relevant textbook guidance, provide actionable, constructive feedback on the teacher's performance.
 
@@ -106,16 +107,16 @@ Relevant Textbook Guidance:
 {"\n".join(retrieved_passages)}
 
 Feedback:"""
-    
+
     # Call the language model to generate feedback
     response = client.messages.create(
-        model="claude-3-5-haiku-20241022",
+        model="claude-3-5-sonnet-20241022",
         max_tokens=1000,
         temperature=1,
         system="You are an experienced teacher trainer who provides clear, actionable feedback.",
         messages=[{"role": "user", "content": [{"type": "text", "text": prompt}]}]
     )
-    
+
     return response.content[0].text
 
 def build_conversation_transcript():
@@ -140,22 +141,22 @@ def build_conversation_transcript():
 def main():
     print("Teacher-Student Chat (type 'quit' to finish conversation)")
     print("-" * 50)
-    
+
     # Chat loop: teacher inputs messages until "quit" is entered
     while True:
         user_input = input("Teacher: ")
         if user_input.lower() == "quit":
             break
-        
+
         # Get the student's response and display it
         student_response = get_response(user_input)
         print("Student:", student_response)
-    
+
     # Build a transcript from the conversation history
     conversation_transcript = build_conversation_transcript()
     print("\nConversation Transcript:")
     print(conversation_transcript)
-    
+
     # Generate and print actionable feedback based on the conversation
     print("\nGenerating actionable feedback...")
     feedback = generate_actionable_feedback(conversation_transcript)
@@ -164,3 +165,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
